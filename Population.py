@@ -16,6 +16,14 @@ class Population:
         for i in range(n):
             self.individuals.append(Individual())
 
+    def NewGeneration(self):
+        self.generation += 1
+        self.Roulette()
+        self.Reproduction()
+        self.Mutation()
+        self.MakeInputs()
+        self.MakeReport()
+
     def SetDirectoryInput(self, dir, input):
         self.directory = dir
         self.FI = FileInterface(dir + "/sss2", dir + "/inp/" + input)
@@ -60,6 +68,18 @@ class Population:
         nIndividuals.extend(self.individuals)
         self.individuals = nIndividuals
 
+    def Mutation(self):
+        for individual in self.individuals:
+            bin_str = bin(individual.chromosome)[2:].zfill(individual.GetChromosomeLen())
+            out_str = ""
+            for bit in bin_str:
+                if random.uniform(0,1) < 0.01:
+                    if bit == '1': out_str += '0'
+                    else : out_str += '1'
+                else : out_str += bit
+            individual = Individual( int ( out_str , base = 2 ))
+
+
     def GetMaxFit(self):
         max = 0.0
         for individual in self.individuals:
@@ -73,11 +93,15 @@ class Population:
         return sum
 
     def MakeReport(self):
-        print("Raport")
+        print("===========Raport============")
+        print("Pokolenie : {}".format(self.generation))
+        best = Individual()
         for individual in self.individuals:
-            form = " {:0" + str(individual.GetChromosomeLen()) + "b} | {} | {:6.3} | {:6.3}"
-            print(form.format(individual.chromosome,individual.GetVariables(),individual.GetFitness(),individual.keff))
+            print(individual)
+            if individual.GetFitness() > best.GetFitness(): best = individual
         print ("Max Fit : {}".format(self.GetMaxFit()))
+        print (best)
+        print ("Params : {}".format(best.GetVariables()))
 
 
         

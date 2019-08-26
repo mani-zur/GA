@@ -1,12 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import random
-from math import exp
+from math import exp, sqrt
 
 random.seed()
 
 
 class Individual:
     __min_vals = [1, 0]
-    __max_vals = [10,20]
+    __max_vals = [10,40]
     __chromo_len = [16, 16]
     
     def __init__(self, Chromosome = -1):
@@ -14,6 +17,12 @@ class Individual:
         else : self.chromosome = Chromosome
         self.keff = 0.0
         self.file_association = ""
+
+    def __str__(self):
+        #form = " {:0" + str(self.GetChromosomeLen()) + "b} | {} | {:6.3} | {:6.3}"
+        #return form.format(self.chromosome, self.GetVariables(),self.GetFitness(), self.keff)
+        form = " {:0" + str(self.GetChromosomeLen()) + "b} | {:6.3} | {:6.3}"
+        return form.format(self.chromosome,self.GetFitness(), self.keff)
 
     def GetVariables(self):
         variables = []
@@ -26,7 +35,8 @@ class Individual:
         return variables
 
     def GetFitness(self):
-        return (-abs(self.keff-1)+1)**6 * (10 - self.GetVariables()[0])**3
+
+        return (-abs(self.keff-1)+1)**10 * ((10 - self.GetVariables()[0])/5)**4 * sqrt((40 - self.GetVariables()[1])/40)
         #return (-abs(self.keff-1)+1)**10 * 1.0 / self.GetVariables()[0]
         #return exp(-(self.keff-1)**2)**4-0.015625
         #return 1.0/abs(1-self.keff)
