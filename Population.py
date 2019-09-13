@@ -34,7 +34,10 @@ class Population:
             #ustawienie parametrów dla symulacji
             variables = [individual.GetVariables()[0], individual.GetVariables()[0] + individual.GetVariables()[1]]
             individual.file_associoation = self.FI.MakeInput(self.directory + "/results",str(individual.chromosome),variables)
-            individual.keff = self.FI.RunInput(individual.file_associoation)
+            if individual.file_associoation : 
+                individual.keff = self.FI.RunInput(individual.file_associoation)  #check file exist
+            else: return False
+        return True
 
     def Roulette(self):
         nIndividuals = []

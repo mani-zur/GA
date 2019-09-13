@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from Population import Population
+import config
 
 def main():
-    pop = Population(50) #count of individuals
-    pop.SetDirectoryInput("/nica/user/z/zurkowski/Serpent", "uranium_reflected.inp") #for cluster
-    pop.MakeInputs()
-    pop.MakeReport()
-    while pop.GetMaxFit() < 0.5 :
-        pop.NewGeneration()
-    #for i in range(10): #nuber of generations
-    #    pop.NewGeneration()
+	pop = Population( config.POP_QUALITY ) #count of individuals
+	pop.SetDirectoryInput( config.MAIN_DIR , config.INPUT_FILE ) #file config
+	if pop.MakeInputs():
+		pop.MakeReport()
+		if config.LOOP_TYPE == "FOR":
+			for i in range( config.LIMITER ): pop.NewGeneration()
+		if config.LOOP_TYPE == "WHILE":
+			while pop.GetMaxFit() < config.LIMITER : pop.NewGeneration()
 
 if __name__ == '__main__':
     main()
