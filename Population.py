@@ -8,6 +8,7 @@ import random
 random.seed()
 
 class Population:
+    __mutation_Rate = 0.01
 
     def __init__(self, n):
         self.individuals = []
@@ -72,15 +73,15 @@ class Population:
         self.individuals = nIndividuals
 
     def Mutation(self):
+        nIndividuals = []
         for individual in self.individuals:
-            bin_str = bin(individual.chromosome)[2:].zfill(individual.GetChromosomeLen())
-            out_str = ""
-            for bit in bin_str:
-                if random.uniform(0,1) < 0.01:
-                    if bit == '1': out_str += '0'
-                    else : out_str += '1'
-                else : out_str += bit
-            individual = Individual( int ( out_str , base = 2 ))
+            if random.uniform(0,1) < self.__mutation_Rate:
+                rand = 2**random.randint(0,individual.GetChromosomeLen()-1)
+                nIndividuals.append( Individual( individual.chromosome ^ rand ) ) #XOR operation
+            else:
+                nIndividuals.append(individual)
+        self.individuals = nIndividuals
+        
 
 
     def GetMaxFit(self):

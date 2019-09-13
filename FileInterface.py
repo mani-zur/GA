@@ -31,7 +31,10 @@ class FileInterface:
     def RunInput(self, input_path):
         if not(path.isfile(input_path + "_res.m")):     #sprawdzenie czy symulacja istnieje
             print("Wykonuję symulację dla : {}".format(input_path))
-            subprocess.check_output([self.sss2, "-omp", "60", input_path]) 
+            try:
+                subprocess.check_output([self.sss2, "-omp", "60", input_path])
+            except subprocess.CalledProcessError:   #simulation failed
+                return 0
         else:
             print("Znalezion symulację : {}".format(input_path))
         
