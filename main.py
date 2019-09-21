@@ -4,8 +4,8 @@ from Population import Population
 import config
 
 def main():
-	pop = Population( config.POP_QUALITY ) #count of individuals
-	pop.SetDirectoryInput( config.MAIN_DIR , config.INPUT_FILE ) #file config
+	pop = Population( config.POP_QUALITY , config.MUTATION_RATE ) #count of individuals
+	pop.SetDirectoryInput( config.MAIN_DIR , config.INPUT_FILE, config.CORE_AMOUNT ) #file config
 	if pop.MakeInputs():
 		pop.MakeReport()
 		if config.LOOP_TYPE == "FOR":
