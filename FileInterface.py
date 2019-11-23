@@ -33,7 +33,7 @@ class FileInterface:
             output.close()
             return output_full_path
         else:
-            self.WriteLog("Error", "Input doesn't exist!")
+            self.WriteLog("Error", "Input {} doesn't exist!".format(self.input_file_name))
             return False
 
     def RunInput(self, input_path):
@@ -42,10 +42,10 @@ class FileInterface:
             try:
                 subprocess.check_output([self.sss2, "-omp", str(self.core_amount), input_path])
             except subprocess.CalledProcessError:   #simulation failed
+                self.WriteLog("Error","Symulacja błędna !")
                 return 0
         else:
             self.WriteLog("Info ", "Znalezion symulację : {}".format(input_path))
-        
         result = open(input_path + "_res.m", "r")
         for line in result:
             if "ABS_KEFF" in line:

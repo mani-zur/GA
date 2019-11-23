@@ -14,7 +14,7 @@ class Population:
         self.volume = n
         self.generation = 0
         self.mutation_rate = m_rate
-        for i in range(n):
+        for _ in range(n):
             self.individuals.append(Individual())
 
     def NewGeneration(self):
@@ -31,7 +31,7 @@ class Population:
 
     
     def MakeInputs(self):
-        for i, individual in enumerate(self.individuals):
+        for individual in self.individuals:
             #set simulation parameters 
             variables = [individual.GetVariables()[0], individual.GetVariables()[0] + individual.GetVariables()[1]]
             individual.file_associoation = self.FI.MakeInput(self.directory + "/results",str(individual.chromosome),variables)
@@ -42,7 +42,7 @@ class Population:
 
     def Roulette(self):
         nIndividuals = []
-        for i in range(self.volume):
+        for _ in range(self.volume):
             barrier = random.uniform(0, self.GetFitSum())
             sum = 0.0
             for individual in self.individuals:
