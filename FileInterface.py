@@ -38,14 +38,14 @@ class FileInterface:
 
     def RunInput(self, input_path):
         if not(path.isfile(input_path + "_res.m")):     #sprawdzenie czy symulacja istnieje
-            self.WriteLog("Info ","Wykonuję symulację dla : {}".format(input_path))
+            #self.WriteLog("Info ","Wykonuję symulację dla : {}".format(input_path))
             try:
                 subprocess.check_output([self.sss2, "-omp", str(self.core_amount), input_path])
             except subprocess.CalledProcessError:   #simulation failed
                 self.WriteLog("Error","Symulacja błędna !")
                 return 0
-        else:
-            self.WriteLog("Info ", "Znalezion symulację : {}".format(input_path))
+        #else:
+            #self.WriteLog("Info ", "Znalezion symulację : {}".format(input_path))
         result = open(input_path + "_res.m", "r")
         for line in result:
             if "ABS_KEFF" in line:

@@ -46,7 +46,7 @@ class Population:
             barrier = random.uniform(0, self.GetFitSum())
             sum = 0.0
             for individual in self.individuals:
-                sum += individual.GetFitness()
+                sum += individual.GetFitness(self.generation)
                 if (sum > barrier):
                     nIndividuals.append(individual)
                     break
@@ -88,7 +88,7 @@ class Population:
     def GetFitSum(self):
         sum = 0.0
         for individual in self.individuals:
-            sum += individual.GetFitness()
+            sum += individual.GetFitness(self.generation)
         return sum
 
     def MakeReport(self):
@@ -98,6 +98,6 @@ class Population:
         for individual in self.individuals:
             print(individual)
             if individual.GetFitness() > best.GetFitness(): best = individual
-        print ("Max Fit : {}".format(self.GetMaxFit()))
-        print (best)
+        self.FI.WriteLog("Max Fit :","{}".format(self.GetMaxFit()))
+        self.FI.WriteLog("Best    :",str(best))
         print ("Params : {}".format(best.GetVariables()))

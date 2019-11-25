@@ -34,12 +34,13 @@ class Individual:
             pos += l
         return variables
 
-    def GetFitness(self, pop):
-        return (100*(1-abs(self.keff-1))**pop)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0) #tutaj zamienić na masę
-        #return (-abs(self.keff-1)+1)**10 * ((10 - self.GetVariables()[0])/5)**4 * sqrt((40 - self.GetVariables()[1])/40)
-        #return (-abs(self.keff-1)+1)**10 * 1.0 / self.GetVariables()[0]
-        #return exp(-(self.keff-1)**2)**4-0.015625
-        #return 1.0/abs(1-self.keff)
+    # diff (difficulty) if higher then hadrer 
+    def GetFitness(self, diff = 20):
+        if diff < 20 : 
+            return ((10000*(1-abs(self.keff-1))**20)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0) + (20-diff)*0.0005)
+        else:
+            return (10000*(1-abs(self.keff-1))**20)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0)
+
 
     def GetChromosomeLen(self):
         sum = 0
