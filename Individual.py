@@ -37,9 +37,10 @@ class Individual:
     # diff (difficulty) if higher then hadrer 
     def GetFitness(self, diff = 20):
         if diff < 20 : 
-            return ((10000*(1-abs(self.keff-1))**20)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0) + (20-diff)*0.0005)
+            add = (20-diff)*0.05
         else:
-            return (10000*(1-abs(self.keff-1))**20)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0)
+            add = 0
+        return ((10000*(1-abs(self.keff-1))**40)/(self.GetVariables()[0]**3 * (18.1) + self.GetVariables()[1]**3 * 1.0) + add)
 
 
     def GetChromosomeLen(self):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from Individual import Individual
 from FileInterface import FileInterface
+from tqdm import tqdm
 
 import random
 
@@ -31,7 +32,7 @@ class Population:
 
     
     def MakeInputs(self):
-        for individual in self.individuals:
+        for individual in tqdm(self.individuals):
             #set simulation parameters 
             variables = [individual.GetVariables()[0], individual.GetVariables()[0] + individual.GetVariables()[1]]
             individual.file_associoation = self.FI.MakeInput(self.directory + "/results",str(individual.chromosome),variables)
