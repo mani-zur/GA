@@ -27,17 +27,22 @@ class Population:
 
     def SetDirectoryInput(self, dir, input, core_amount):
         self.directory = dir
-        self.FI = FileInterface(dir + "/sss2", dir + "/inp/" + input, core_amount)
+        self.FI = FileInterface(dir + "/scripts/bash/run_jobs.sh", dir + "/inp/" + input, core_amount)
 
     
     def MakeInputs(self):
+        result = self.FI.MakeDir(self.directory + "/results","gen"+str(self.generation))
         for individual in self.individuals:
             #set simulation parameters 
             variables = [individual.GetVariables()[0], individual.GetVariables()[0] + individual.GetVariables()[1]]
-            individual.file_associoation = self.FI.MakeInput(self.directory + "/results",str(individual.chromosome),variables)
-            if individual.file_associoation : 
-                individual.keff = self.FI.RunInput(individual.file_associoation)  #check file exist
-            else: return False
+            individual.file_association = self.FI.MakeInput(result,str(individual.chromosome)+"i",variables)
+            if not individual.file_association: return False
+        self.FI.RunInputCluster(result) #cluster run
+        for individual in self.individuals:
+            individual.keff = self.FI.ReadResult("ABS_KEFF",[47,58],individual.file_association)
+            #if individual.file_associoation : 
+            #    individual.keff = self.FI.RunInput(individual.file_associoation)  #check file exist
+            #else: return False
         return True
 
     def Roulette(self):

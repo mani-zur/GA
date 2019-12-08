@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from os import path
+from os import path, mkdir
 import subprocess
 import multiprocessing
+import time
 
 class FileInterface:
     
@@ -38,14 +39,14 @@ class FileInterface:
 
     def RunInput(self, input_path):
         if not(path.isfile(input_path + "_res.m")):     #sprawdzenie czy symulacja istnieje
-            self.WriteLog("Info ","Wykonuję symulację dla : {}".format(input_path))
+            #self.WriteLog("Info ","Wykonuję symulację dla : {}".format(input_path))
             try:
                 subprocess.check_output([self.sss2, "-omp", str(self.core_amount), input_path])
             except subprocess.CalledProcessError:   #simulation failed
                 self.WriteLog("Error","Symulacja błędna !")
                 return 0
-        else:
-            self.WriteLog("Info ", "Znalezion symulację : {}".format(input_path))
+        #else:
+            #self.WriteLog("Info ", "Znalezion symulację : {}".format(input_path))
         result = open(input_path + "_res.m", "r")
         for line in result:
             if "ABS_KEFF" in line:
@@ -56,3 +57,20 @@ class FileInterface:
         print(type + " : " + message)
         log.write(type + " : " + message + "\n")
         log.close()
+
+#CLUSTER FUNCTIONS
+    def MakeDir(self, dir, name):
+        mkdir(dir + "/" + str(name))
+        return dir + "/" + str(name)
+
+    def RunInputCluster(self, input_dir):
+        subprocess.check_output([self.sss2, input_dir])
+        while subprocess.check_output(["qstat"]) != "":
+            time.sleep(1)
+
+
+    def ReadResult(self, what, where, input_path):
+        result = open(input_path + "_res.m", "r")
+        for line in result:
+            if what in line:
+                return float(line[where[0]:where[1]])

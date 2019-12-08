@@ -1,0 +1,10 @@
+#!/bin/bash
+#$ -N runvHLLE
+#$ -j y
+#$ -cwd
+#$ -o /lhep/users/zurkowski/Serpent/job_test
+#$ -e /lhep/users/zurkowski/Serpent/job_test
+# request Bourne again shell as shell for job
+#$ -S /bin/bash
+
+/lhep/users/zurkowski/Serpent/sss2_mpi $1 -omp 80
